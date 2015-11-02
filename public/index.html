@@ -1,0 +1,76 @@
+<html>
+<head>
+<title>JM Music Store Electronic Queueing Client</title>
+<link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body onload="init();">
+<script>
+var ws;
+function init() {
+	var url = document.URL.replace("http://", "ws://");
+	ws = new WebSocket(url);
+	ws.onopen = function(evt) {
+		getAll();
+	}
+	ws.onclose = function(evt) {}
+	ws.onmessage = function(evt) {
+		var res = JSON.parse(evt.data);
+
+		if(res.action == "get" || res.action == "reset") {
+			document.getElementById(res.queue).innerHTML = res.num;
+		}
+	} 
+	ws.onerror = function(evt) {}
+}
+function getAll() {
+	if(document.getElementById("bass").innerHTML == "0") {
+		pullLast("bass");
+	}
+	if(document.getElementById("guitar").innerHTML == "0") {
+		pullLast("guitar");
+	}
+	if(document.getElementById("drums").innerHTML == "0") {
+		pullLast("drums");
+	}
+}
+function getNumber(str) {
+	var prev = document.getElementById(str).innerHTML;
+	var value = JSON.stringify({
+		action : "get",
+	    queue : str,
+	    prev : prev
+	});
+	ws.send(value);
+}
+function pullLast(str) {
+	var value = JSON.stringify({
+		action : "last",
+	    queue : str
+	});
+	ws.send(value);
+}
+</script>
+<p class="banner">JM Music Store Electronic Queueing</p>
+<div class="box left">
+   <div class="content">
+      <p class="head">Bass</p>
+      <span id="bass" class="num">0</span>
+   </div>
+   <div class="left"><input class="btn" type="button" value="GET NUMBER" onClick="getNumber('bass');" /></div>
+</div>
+<div class="box left">
+   <div class="content">
+      <p class="head">Guitar</p>
+      <span id="guitar" class="num">0</span>
+   </div>
+   <div class="left"><input class="btn" type="button" value="GET NUMBER" onClick="getNumber('guitar');" /></div>
+</div>
+<div class="box left">
+   <div class="content">
+      <p class="head">Drums</p>
+      <span id="drums" class="num">0</span>
+   </div>
+   <div class="left"><input class="btn" type="button" value="GET NUMBER" onClick="getNumber('drums');" /></div>
+</div>
+</body>
+</html>

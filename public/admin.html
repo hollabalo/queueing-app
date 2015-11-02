@@ -1,0 +1,83 @@
+<html>
+<head>
+<title>JM Music Store Electronic Queueing Admin/Dashboard</title>
+<link rel="stylesheet" type="text/css" href="/style.css">
+</head>
+<body onload="init();">
+<script>
+var ws;
+function init() {
+	var url = document.URL.replace("http://", "ws://");
+	ws = new WebSocket(url);
+	ws.onopen = function(evt) {
+		getAll();
+	}
+	ws.onclose = function(evt) {}
+	ws.onmessage = function(evt) {
+		var res = JSON.parse(evt.data);
+
+		if(res.action != "get" ) {
+			document.getElementById(res.queue).innerHTML = res.num;
+		}
+	} 
+	ws.onerror = function(evt) {}
+}
+function getNumber(str) {
+	var value = JSON.stringify({
+		action : "serve",
+	    queue : str
+	});
+	ws.send(value);
+}
+function getAll() {
+	getNumber("bass");
+	getNumber("guitar");
+	getNumber("drums");
+}
+function popNumber(str) {
+	var prev = document.getElementById(str).innerHTML;
+	var value = JSON.stringify({
+		action : "pop",
+	    queue : str,
+	    prev : prev
+	});
+	ws.send(value);
+}
+function resetQueue(str) {
+	var value = JSON.stringify({
+		action : "reset",
+	    queue : str
+	});
+	ws.send(value);
+}
+</script>
+<p class="banner">JM Music Store</p>
+<div class="box left">
+   <div class="content">
+      <p class="head">Bass</p>
+      <p class="sub">Now Serving</p>
+      <span id="bass" class="num">0</span>
+   </div>
+   <div class="left"><input class="btn" type="button" value="NEXT NUMBER" onClick="popNumber('bass');" /></div>
+   <div class="right"><input class="btn" type="button" value="RESET QUEUE" onClick="resetQueue('bass');" /></div>
+</div>
+<div class="box left">
+   <div class="content">
+      <p class="head">Guitar</p>
+      <p class="sub">Now Serving</p>
+      <span id="guitar" class="num">0</span>
+   </div>
+   <div class="left"><input class="btn" type="button" value="NEXT NUMBER" onClick="popNumber('guitar');" /></div>
+   <div class="right"><input class="btn" type="button" value="RESET QUEUE" onClick="resetQueue('guitar');" /></div>
+</div>
+<div class="box left">
+   <div class="content">
+      <p class="head">Drums</p>
+      <p class="sub">Now Serving</p>
+      <span id="drums" class="num">0</span>
+   </div>
+   <div class="left"><input class="btn" type="button" value="NEXT NUMBER" onClick="popNumber('drums');" /></div>
+   <div class="right"><input class="btn" type="button" value="RESET QUEUE" onClick="resetQueue('drums');" /></div>
+</div>
+</body>
+</html>

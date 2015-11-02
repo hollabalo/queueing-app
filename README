@@ -1,0 +1,14 @@
+Simple Queueing Application
+Written in Node.js
+
+This application shows how powerful yet easy to create asynchronous applications in node.js.
+Web sockets are used for the remote notification across multiple instances of the queueing application.
+
+Node.js module dependencies:
+- Redis
+- Url
+- node-static
+
+This application uses Redis as the in-memory persistence.
+
+(c) John Michael Gerona

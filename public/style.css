@@ -1,0 +1,58 @@
+.btn {
+  font-family: Arial;
+  color: #121112;
+  font-size: 10px;
+  background: #ffffff;
+  padding: 10px 10px 10px 10px;
+  border: solid #949494 1px;
+  text-decoration: none;
+}
+
+.btn:hover {
+  background: #828282;
+  text-decoration: none;
+}
+
+.box {
+  width:25%;
+  background-color:#ccc;
+  padding:50px 25px;
+  margin: 10px 15px;
+}
+
+.content {
+  margin: 0 auto; 
+  width:50%;
+  text-align:center !important;
+}
+
+.content .head {
+  font-size:60px; 
+  font-weight:bold;
+  margin:0;
+}
+
+.content .sub {
+  margin:0;
+  padding:0;
+  font-size:20px; 
+}
+
+.content .num {
+  font-size:150px;
+}
+
+.left {
+   float: left;
+}
+
+.right {
+   float: right;
+}
+
+.banner {
+  text-align: center;
+  font-size: 35px;
+  font-weight: bold;
+  margin: 10px 0;
+}
